@@ -21,8 +21,8 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(useMaterial3: true),
       routes: {
-        'LoginPage': (context) => const LoginPage(),
-        RegisterPage.id: (context) => const RegisterPage()
+        'LoginPage': (context) => LoginPage(),
+        RegisterPage.id: (context) => RegisterPage()
       },
       initialRoute: 'LoginPage',
     );

@@ -6,16 +6,18 @@ class CustomTextField extends StatelessWidget {
       {Key? key,
       required this.hintText,
       required this.secureText,
-      required this.labelText})
+      required this.labelText,
+      this.onchange})
       : super(key: key);
 
   String? hintText;
   String? labelText;
   bool? secureText;
-
+  Function(String)? onchange;
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: onchange,
       obscureText: secureText!,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
