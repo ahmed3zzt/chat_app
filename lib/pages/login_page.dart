@@ -1,0 +1,108 @@
+import 'package:flutter/material.dart';
+import 'package:scholar_chat/pages/register_page.dart';
+import 'package:scholar_chat/widgets/button.dart';
+
+import '../constans.dart';
+import '../widgets/text_field.dart';
+
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kPrimaryColor,
+      body: Column(
+        children: [
+          const Spacer(
+            flex: 2,
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset('assets/images/scholar.png'),
+                const Text(
+                  'Scholar Chat',
+                  style: TextStyle(
+                    fontFamily: 'Pacifico',
+                    fontSize: 22,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "LOGIN",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextField(
+                    labelText: 'Email',
+                    hintText: "Enter Your Email",
+                    secureText: false,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextField(
+                    labelText: 'Password',
+                    hintText: 'Enter your Password',
+                    secureText: true,
+                  ),
+                  CustomButton(text: 'Login'),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "don't have an acount?",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, RegisterPage.id);
+                        },
+                        child: const Text(
+                          "Register",
+                          style: TextStyle(color: Color(0xffC7EDE6)),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const Spacer(
+            flex: 2,
+          ),
+        ],
+      ),
+    );
+  }
+}
