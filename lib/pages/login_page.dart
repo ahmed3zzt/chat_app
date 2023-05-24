@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:scholar_chat/pages/chat_page.dart';
 import 'package:scholar_chat/pages/register_page.dart';
 import 'package:scholar_chat/widgets/button.dart';
 
@@ -100,11 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                             setState(() {});
                             try {
                               await loginUser();
-
-                              showSnakeBar(context, 'Login Successful');
-
-                              isLoading = false;
-                              setState(() {});
+                              Navigator.pushNamed(context, ChatPage.id);
                             } on FirebaseAuthException catch (e) {
                               if (e.code == 'user-not-found') {
                                 showSnakeBar(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scholar_chat/pages/chat_page.dart';
 import 'package:scholar_chat/pages/register_page.dart';
 
 import 'constans.dart';
@@ -26,7 +27,8 @@ class MainApp extends StatelessWidget {
       ),
       routes: {
         'LoginPage': (context) => LoginPage(),
-        RegisterPage.id: (context) => RegisterPage()
+        RegisterPage.id: (context) => const RegisterPage(),
+        ChatPage.id: (context) => const ChatPage(), 
       },
       initialRoute: 'LoginPage',
     );
