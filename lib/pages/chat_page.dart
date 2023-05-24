@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scholar_chat/constans.dart';
 
+import '../models/message.dart';
 import '../widgets/chat_bubble.dart';
 
 class ChatPage extends StatefulWidget {
@@ -18,18 +19,22 @@ class _ChatPageState extends State<ChatPage> {
       FirebaseFirestore.instance.collection(KMessagesCollection);
   TextEditingController controller = TextEditingController();
   void sendMessage(data) {
-    messages.add({'message': data});
-
+    messages.add({KMessage: data, KCreatedAt: DateTime.now()});
     controller.clear();
   }
 
+  final ScrollController _controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<QuerySnapshot>(
-        future: messages.get(),
+    return StreamBuilder<QuerySnapshot>(
+        stream: messages.orderBy(KCreatedAt).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print(snapshot.data!.docs[0]['message']);
+            List<Message> messageList = [];
+            for (int i = 0; i < snapshot.data!.docs.length; i++) {
+              messageList.add(Message.fromJson(snapshot.data!.docs[i]));
+            }
             return Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
@@ -52,9 +57,12 @@ class _ChatPageState extends State<ChatPage> {
                 children: [
                   Expanded(
                     child: ListView.builder(
-                      itemCount: 10,
+                      controller: _controller,
+                      itemCount: messageList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return const ChatBubble();
+                        return ChatBubble(
+                          message: messageList[index],
+                        );
                       },
                     ),
                   ),
@@ -64,6 +72,11 @@ class _ChatPageState extends State<ChatPage> {
                       controller: controller,
                       onSubmitted: (data) {
                         sendMessage(data);
+                        _controller.animateTo(
+                          _controller.position.maxScrollExtent,
+                          duration: const Duration(seconds: 2),
+                          curve: Curves.fastOutSlowIn,
+                        );
                       },
                       decoration: InputDecoration(
                         hintText: 'Type your message here',
