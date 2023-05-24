@@ -21,6 +21,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
         primaryColor: kPrimaryColor,
@@ -28,7 +29,7 @@ class MainApp extends StatelessWidget {
       routes: {
         'LoginPage': (context) => LoginPage(),
         RegisterPage.id: (context) => const RegisterPage(),
-        ChatPage.id: (context) => const ChatPage(), 
+        ChatPage.id: (context) => const ChatPage(),
       },
       initialRoute: 'LoginPage',
     );
