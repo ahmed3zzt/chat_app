@@ -4,6 +4,7 @@ import 'package:scholar_chat/constans.dart';
 
 import '../models/message.dart';
 import '../widgets/chat_bubble.dart';
+import '../widgets/chat_bubbles.dart';
 
 class ChatPage extends StatefulWidget {
   static String id = 'chat-page';
@@ -18,17 +19,18 @@ class _ChatPageState extends State<ChatPage> {
   CollectionReference messages =
       FirebaseFirestore.instance.collection(KMessagesCollection);
   TextEditingController controller = TextEditingController();
-  void sendMessage(data) {
-    messages.add({KMessage: data, KCreatedAt: DateTime.now()});
-    controller.clear();
+  void sendMessage(data, email) {
+    messages.add({KMessage: data, KCreatedAt: DateTime.now(), 'id': email});
+    controller.text = '';
   }
 
   final ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
+    var email = ModalRoute.of(context)!.settings.arguments;
     return StreamBuilder<QuerySnapshot>(
-        stream: messages.orderBy(KCreatedAt).snapshots(),
+        stream: messages.orderBy(KCreatedAt, descending: true).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Message> messageList = [];
@@ -57,12 +59,14 @@ class _ChatPageState extends State<ChatPage> {
                 children: [
                   Expanded(
                     child: ListView.builder(
+                      reverse: true,
                       controller: _controller,
                       itemCount: messageList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return ChatBubble(
-                          message: messageList[index],
-                        );
+                        return messageList[index].id == email
+                            ? ChatBubbleLTR(message: messageList[index].message)
+                            : ChatBubbleRTL(
+                                message: messageList[index].message);
                       },
                     ),
                   ),
@@ -71,10 +75,10 @@ class _ChatPageState extends State<ChatPage> {
                     child: TextField(
                       controller: controller,
                       onSubmitted: (data) {
-                        sendMessage(data);
+                        sendMessage(data, email);
                         _controller.animateTo(
-                          _controller.position.maxScrollExtent,
-                          duration: const Duration(seconds: 2),
+                          0,
+                          duration: const Duration(seconds: 1),
                           curve: Curves.fastOutSlowIn,
                         );
                       },
