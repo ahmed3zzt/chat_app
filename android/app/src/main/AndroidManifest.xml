@@ -3,7 +3,7 @@
    <application
         android:label="Scholar"
         android:name="${applicationName}"
-        android:icon="@mipmap-hdpi/ic_launcher">
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"
